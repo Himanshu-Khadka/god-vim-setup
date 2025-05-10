@@ -1,6 +1,6 @@
 # God Vim Setup
 
-A one‑stop installer for Neovim (and Vim fallback), configured with your favorite plugins, keybindings, and themes. Clone into your home directory and run a single script to get up and running.
+A one‑stop installer for Neovim (and Vim fallback), configured with essential plugins, keybindings, and themes. Clone this repo into your home directory and run a single script to get up and running.
 
 ---
 
@@ -8,87 +8,99 @@ A one‑stop installer for Neovim (and Vim fallback), configured with your favor
 
 ```plaintext
 ~/god-vim-setup
-├── .vimrc          # main configuration
-├── .vim/           # custom Vim scripts, snippets, colors
-├── install.sh      # installer script
-└── README.md       # this file
+├── .vimrc          # Main Vim/Neovim configuration
+├── init.vim        # Neovim-specific settings (symlinked automatically)
+├── .vim/           # Custom Vim scripts, snippets, and color schemes
+├── install.sh      # Automated installer script
+└── README.md       # This file
 ```
 
 ---
 
-## 🚀 Installation
+## 🧰 Tools & Dependencies Installed
 
-1. **Clone into ****`~/`**
+The installer sets up the following on your system:
 
+- **Neovim** (with Vim fallback if you prefer)
+- **Vim-plug** plugin manager for Vim and Neovim
+- **Git** (for managing plugins and cloning repos)
+- **cURL** (for downloading vim-plug and themes)
+- **Homebrew** (on macOS)
+- **apt**, **yum**, or **pacman** (on Linux, depending on your distro)
+
+---
+
+## 🚀 Installation Steps
+
+1. **Clone the repository** into your home directory:
    ```bash
    git clone https://github.com/<your‑username>/god‑vim‑setup.git ~/god‑vim‑setup
    ```
-
-2. **Run the installer**
-
+2. **Run the installer**:
    ```bash
-   cd ~/god‑vim‑setup
+   cd ~/god-vim-setup
    bash install.sh
    ```
+   This script will:
+   - Detect your OS (macOS vs. Linux) and install dependencies.
+   - Install `vim-plug` for both Vim and Neovim.
+   - Link your config files (`.vimrc` and `init.vim`) into place.
+   - Copy or symlink your custom `.vim/` folder (colors, snippets, scripts).
+   - Auto-install all plugins via `:PlugInstall`.
 
-   The script will:
-
-   - Detect your OS (macOS vs Linux) and install Neovim (and dependencies) via Homebrew, `apt`, `yum`, or `pacman`.
-   - Install [vim-plug](https://github.com/junegunn/vim-plug) for plugin management.
-   - Symlink `~/.vimrc` and `~/.config/nvim/init.vim` to this repo’s `.vimrc`.
-   - Symlink `~/.vim/` to this repo’s `.vim/` directory.
-   - Launch Neovim once to auto-install all plugins.
-
-3. **Launch**
-
+3. **Launch your editor**:
    ```bash
    nvim
    ```
 
 ---
 
-## 🛠 Usage
+## 🔧 Usage & Common Commands
 
-- **Edit files**: `nvim <file>`
-- **Open folder**: `nvim .`
-- **Plugin commands**:
-  - `:PlugInstall`  – install new plugins
-  - `:PlugUpdate`   – update existing plugins
-  - `:PlugClean`    – remove unused plugins
-
----
-
-## ⌨️ Key Shortcuts & Mappings
-
-| Shortcut        | Description                        |
-| --------------- | ---------------------------------- |
-| `<Leader>n`     | Toggle NvimTree file explorer      |
-| `<F3>`          | Toggle NERDTree                    |
-| `<F5>`          | Save & run current Python script   |
-| `jj`            | Exit Insert mode                   |
-| `<Space>` (cmd) | Enters `:` in Normal mode          |
-| `n` / `N`       | Next / previous search, centered   |
-| `<C-j>` `<C-k>` | Jump between splits (down / up)    |
-| `<C-h>` `<C-l>` | Jump between splits (left / right) |
-| `<Leader>\`     | Jump back to last cursor position  |
-
-> **Leader** is set to `\` (backslash) by default.
+- **Open a file**: `nvim <file>`
+- **Open a directory**: `nvim .`
+- **Plugin management**:
+  - `:PlugInstall` – install new plugins
+  - `:PlugUpdate`  – update installed plugins
+  - `:PlugClean`   – remove unused plugins
+- **Move between splits**: `<C-h>`, `<C-j>`, `<C-k>`, `<C-l>`
+- **Toggle file tree**: `<Leader>n` (NvimTree) or `<F3>` (NERDTree)
+- **Run a Python script**: `<F5>` (saves file and executes)
 
 ---
 
-## 🔧 install.sh (installer script)
+## 📌 Notes & Best Practices
 
- `install.sh`. It checks your OS, installs prerequisites, links configs, and bootstraps plugins.
-
-
-## 📖 Further Customization
-
-- To add/remove plugins, edit the `Plug '…'` lines in `.vimrc` and re-run `:PlugInstall`.
-- Change color schemes or fonts under the `has('gui_running')` section.
-- Add more mappings in the **MAPPINGS** block of `.vimrc`.
+- **Backup your current configs** before running the installer if you have an existing setup.
+- **Edit plugins**: To add or remove plugins, update the `call plug#begin()` / `call plug#end()` block in your `.vimrc` or `init.vim`, then run `:PlugInstall`.
+- **Custom scripts & snippets**: Place any custom Vim scripts in `.vim/` (e.g., `snippets/`, `ftplugin/`, etc.). The installer will copy or link this folder into `~/.vim/`.
 
 ---
 
-*Feel free to open issues or PRs on GitHub if you hit any snags!*\
-— Happy editing! ✨
+## 🎨 Theme Management
 
+1. **Add custom themes**: Drop any `.vim` or `.lua` color scheme files into:
+   - Vim: `~/.vim/colors/`
+   - Neovim: `~/.config/nvim/colors/`
+2. **Set a default theme**: In your `.vimrc` or `init.vim`, add:
+   ```vim
+   colorscheme <your-theme-name>
+   ```
+3. **Automate theme setup**: The installer can append a default theme setting. To set `gruvbox` by default, add the following at the end of `install.sh` (before the final echo):
+   ```bash
+   # Set default colorscheme
+   echo "colorscheme gruvbox" >> "$HOME/.vimrc"
+   echo "colorscheme gruvbox" >> "$HOME/.config/nvim/init.vim"
+   ```
+
+---
+
+## 🔍 Troubleshooting
+
+- **Missing plugins**: Run `:PlugInstall` again or check your internet connection.
+- **Wrong colors**: Ensure your terminal supports true color and you have set `export TERM="xterm-256color"` in your shell.
+- **Permission issues**: If `install.sh` fails, ensure it's executable (`chmod +x install.sh`) and you have `sudo` access for system installs.
+
+---
+
+*Happy coding! Feel free to open issues or pull requests on GitHub if you run into any problems.*
